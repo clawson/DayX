@@ -22,6 +22,8 @@ static NSString * const contentKey = @"body";
 
 @implementation ViewController
 
+#pragma mark - ViewController methods
+
 - (void) viewDidLoad {
     [super viewDidLoad];
     
@@ -34,6 +36,12 @@ static NSString * const contentKey = @"body";
     [self updateViewWithDictionary:journalEntry];
 }
 
+- (void) didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - Custom methods
+
 - (void) updateViewWithDictionary: (NSDictionary *) journalEntry {
     self.titleTextField.text = journalEntry[titleKey];
     self.contentTextView.text = journalEntry[contentKey];
@@ -42,20 +50,6 @@ static NSString * const contentKey = @"body";
 - (IBAction) clearButtonPress: (id) sender {
     self.titleTextField.text = @"";
     self.contentTextView.text = @"";
-    
-}
-
-- (BOOL) textFieldShouldReturn: (UITextField *) titleField {
-    [titleField resignFirstResponder];
-    return YES;
-}
-
--(void) textFieldDidEndEditing: (UITextField *) textField {
-    [self save:textField];
-}
-
-- (void) textViewDidChange: (UITextView *) textView {
-    [self save:textView];
 }
 
 - (void) save: (id)sender {
@@ -69,8 +63,21 @@ static NSString * const contentKey = @"body";
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (void) didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+#pragma mark - TextFieldDelegate methods
+
+- (BOOL) textFieldShouldReturn: (UITextField *) titleField {
+    [titleField resignFirstResponder];
+    return YES;
+}
+
+-(void) textFieldDidEndEditing: (UITextField *) textField {
+    [self save:textField];
+}
+
+#pragma mark - TextViewDelegate methods
+
+- (void) textViewDidChange: (UITextView *) textView {
+    [self save:textView];
 }
 
 @end
